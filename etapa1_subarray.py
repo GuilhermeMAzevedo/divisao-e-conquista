@@ -1,3 +1,6 @@
+import sys
+
+
 def forca_bruta(vetor):
     n = len(vetor)
     melhor = vetor[0]
@@ -47,7 +50,7 @@ def divisao_e_conquista(vetor, low, high):
 
 
 if __name__ == "__main__":
-    dados = input().split()
+    dados = sys.stdin.read().split()
     n = int(dados[0])
     vetor = [int(x) for x in dados[1:n + 1]]
     soma, inicio, fim = divisao_e_conquista(vetor, 0, n - 1)
