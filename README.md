@@ -4,7 +4,7 @@ Trabalho prático de Projeto e Análise de Algoritmos. Implementamos algoritmos 
 
 **Dupla:** Francisco Magno e Guilherme Moreira
 **Linguagem:** Python 3.8 ou superior
-**Entrega:** 02/11/2026
+**Entrega:** 06/11/2026
 
 ## Problemas
 
