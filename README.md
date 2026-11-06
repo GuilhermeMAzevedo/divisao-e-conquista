@@ -42,16 +42,27 @@ A ordenação inicial por x e por y usa a função da biblioteca padrão. O rela
 ```
 divisao-e-conquista/
 ├── README.md
-├── etapa1.py              # subarray de soma máxima (força bruta e divisão e conquista)
-├── etapa2.py              # par de pontos mais próximos (força bruta e divisão e conquista)
-├── medicao.py             # medição de tempos (Etapa 3), gera resultados.csv
-├── resultados.csv         # medições brutas
+├── LICENSE
+├── requirements.txt         # dependências (matplotlib, só para os gráficos)
+├── etapa1.py                # subarranjo de soma máxima: força bruta, D&C e Kadane
+├── etapa2.py                # par de pontos mais próximos: força bruta e D&C
+├── medicao.py               # Etapa 3: mede os tempos e gera CSVs, tabela e gráficos
+├── resultados.csv           # medições brutas (uma linha por execução)
+├── resultados_limiar.csv    # medições do experimento do limiar da Etapa 2
+├── maquina.txt              # configuração da máquina usada nas medições
+├── graficos/
+│   ├── tabela.md            # tempos médios e desvios padrão
+│   ├── etapa1_tempo.png     # tempo × n
+│   ├── etapa1_razao.png     # tempo dividido pela complexidade esperada
+│   ├── etapa2_tempo.png
+│   ├── etapa2_razao.png
+│   └── etapa2_limiar.png    # tempo da D&C para cada limiar
 ├── testes/
-│   ├── casos_etapa1.txt   # entradas e saídas esperadas da Etapa 1
-│   ├── casos_etapa2.txt   # entradas e saídas esperadas da Etapa 2
+│   ├── casos_etapa1.txt     # entradas, saídas esperadas e motivo de cada caso
+│   ├── casos_etapa2.txt
 │   ├── test_etapa1.py
 │   └── test_etapa2.py
-└── relatorio.pdf          # relatório de até 8 páginas
+└── relatorio.pdf            # relatório de até 8 páginas
 ```
 
 ## Como executar
@@ -59,7 +70,7 @@ divisao-e-conquista/
 Requisitos: Python 3.8 ou superior. Só a Etapa 3 precisa de uma biblioteca externa (`matplotlib`, para os gráficos):
 
 ```bash
-pip install matplotlib
+pip install -r requirements.txt
 ```
 
 ### Etapa 1
@@ -77,9 +88,13 @@ Saída esperada (soma, índice inicial, índice final):
 ```
 
 ### Etapa 2
+A entrada é `n` seguido das `n` coordenadas `x y`:
 
-[Descrever o formato de entrada e o comando, depois que a Etapa 2 estiver pronta.]
+    printf "3\n0 0\n3 4\n10 10\n" | python etapa2.py
 
+Saída (distância com 6 casas e os dois pontos):
+
+    5.000000 0 0 3 4
 ### Medições
 
 ```bash
