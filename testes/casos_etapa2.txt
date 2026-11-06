@@ -1,0 +1,86 @@
+# Casos de teste da Etapa 2: par de pontos mais próximos
+#
+# Formato de cada caso (separados por uma linha em branco):
+#   caso:      nome curto
+#   motivo:    por que o caso existe
+#   entrada:   n seguido das n coordenadas x y
+#   distancia: menor distância, com 6 casas decimais
+#   par:       os dois pontos em ordem crescente de (x, y); omitido quando há
+#              mais de um par com a distância mínima (qualquer um deles vale)
+
+caso: dois pontos
+motivo: menor entrada válida; não há o que dividir
+entrada: 2 0 0 3 4
+distancia: 5.000000
+par: 0 0 3 4
+
+caso: três pontos
+motivo: caso base da recursão com o limiar padrão (3)
+entrada: 3 0 0 2 0 5 0
+distancia: 2.000000
+par: 0 0 2 0
+
+caso: exemplo clássico
+motivo: caso conhecido da literatura, com pontos espalhados
+entrada: 6 2 3 12 30 40 50 5 1 12 10 3 4
+distancia: 1.414214
+par: 2 3 3 4
+
+caso: par cruzando a linha divisória
+motivo: o par mais próximo tem um ponto de cada lado; só a faixa central o encontra
+entrada: 6 0 0 10 5 19 2 21 3 30 0 40 5
+distancia: 2.236068
+par: 19 2 21 3
+
+caso: vários pontos na faixa
+motivo: todos os pontos caem na faixa e o par mais próximo não é o primeiro comparado
+entrada: 8 -0.5 0 -0.5 2 -0.5 4 -0.5 6 0.5 1 0.5 3 0.5 5 0.5 6.6
+distancia: 1.166190
+par: -0.5 6 0.5 6.6
+
+caso: pontos duplicados
+motivo: distância 0; dois pontos iguais não podem ser descartados
+entrada: 4 1 1 5 5 1 1 9 9
+distancia: 0.000000
+par: 1 1 1 1
+
+caso: todos os pontos iguais
+motivo: todas as distâncias são 0 e a faixa central fica vazia
+entrada: 5 3 3 3 3 3 3 3 3 3 3
+distancia: 0.000000
+par: 3 3 3 3
+
+caso: todos com o mesmo x
+motivo: a linha divisória passa por todos os pontos; a divisão tem que ser pela posição, não pelo valor de x
+entrada: 5 0 0 0 10 0 13 0 30 0 31
+distancia: 1.000000
+par: 0 30 0 31
+
+caso: todos com o mesmo y
+motivo: pontos colineares na horizontal; a ordenação por y não separa ninguém
+entrada: 5 0 0 7 0 9 0 20 0 23 0
+distancia: 2.000000
+par: 7 0 9 0
+
+caso: coordenadas negativas
+motivo: a distância à linha divisória usa valor absoluto
+entrada: 4 -5 -5 -1 -1 3 3 -2 -1
+distancia: 1.000000
+par: -2 -1 -1 -1
+
+caso: coordenadas decimais
+motivo: a entrada aceita números não inteiros
+entrada: 3 0.5 0.5 0.6 0.7 2 2
+distancia: 0.223607
+par: 0.5 0.5 0.6 0.7
+
+caso: coordenadas grandes
+motivo: valores na casa do milhão não podem perder precisão no cálculo
+entrada: 3 1000000 1000000 1000003 1000004 0 0
+distancia: 5.000000
+par: 1000000 1000000 1000003 1000004
+
+caso: empate entre pares
+motivo: os quatro lados do quadrado têm a mesma distância; qualquer um deles é correto
+entrada: 4 0 0 1 0 0 1 1 1
+distancia: 1.000000
