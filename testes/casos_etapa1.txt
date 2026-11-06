@@ -1,0 +1,85 @@
+# Casos de teste da Etapa 1: subarranjo de soma máxima
+#
+# Formato de cada caso (separados por uma linha em branco):
+#   caso:    nome curto
+#   motivo:  por que o caso existe
+#   entrada: n seguido dos n inteiros
+#   saida:   soma, índice inicial e índice final (índices a partir de 0)
+#
+# Regra de desempate: entre intervalos de mesma soma, vence o que começa
+# mais cedo e, depois, o que termina mais cedo.
+
+caso: exemplo clássico
+motivo: caso conhecido da literatura, com positivos e negativos misturados
+entrada: 9 -2 1 -3 4 -1 2 1 -5 4
+saida: 6 3 6
+
+caso: só negativos
+motivo: a resposta é o maior elemento, nunca um intervalo vazio de soma 0
+entrada: 4 -3 -1 -7 -2
+saida: -1 1 1
+
+caso: só negativos com empate
+motivo: com o maior elemento repetido, vence a primeira ocorrência
+entrada: 3 -2 -2 -5
+saida: -2 0 0
+
+caso: tamanho 1 positivo
+motivo: caso base da recursão
+entrada: 1 5
+saida: 5 0 0
+
+caso: tamanho 1 negativo
+motivo: caso base da recursão com valor negativo
+entrada: 1 -5
+saida: -5 0 0
+
+caso: tamanho 2
+motivo: menor vetor que divide; o melhor intervalo é o que cruza o meio
+entrada: 2 1 2
+saida: 3 0 1
+
+caso: empate entre intervalos separados
+motivo: dois intervalos sem sobreposição com a mesma soma; vence o que começa antes
+entrada: 5 3 -9 3 -9 2
+saida: 3 0 0
+
+caso: empate com o mesmo início
+motivo: um zero no fim estende o intervalo sem mudar a soma; vence o que termina antes
+entrada: 3 2 0 -1
+saida: 2 0 0
+
+caso: empate com o mesmo fim
+motivo: um zero no começo estende o intervalo sem mudar a soma; vence o que começa antes
+entrada: 3 0 2 -1
+saida: 2 0 1
+
+caso: todos zeros
+motivo: empate total entre todos os intervalos; a resposta é o primeiro elemento
+entrada: 4 0 0 0 0
+saida: 0 0 0
+
+caso: todos positivos
+motivo: a resposta é o vetor inteiro
+entrada: 5 1 2 3 4 5
+saida: 15 0 4
+
+caso: máximo cruzando o meio
+motivo: exercita a função que combina as duas metades
+entrada: 6 -1 -1 5 5 -1 -1
+saida: 10 2 3
+
+caso: máximo no início
+motivo: o melhor intervalo começa no primeiro índice
+entrada: 5 10 -20 1 2 3
+saida: 10 0 0
+
+caso: máximo no fim
+motivo: o melhor intervalo termina no último índice
+entrada: 5 1 2 -20 3 9
+saida: 12 3 4
+
+caso: soma acima de 32 bits
+motivo: em linguagens com inteiro de 32 bits essa soma estouraria
+entrada: 3 2000000000 2000000000 -1
+saida: 4000000000 0 1
