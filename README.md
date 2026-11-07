@@ -62,7 +62,8 @@ divisao-e-conquista/
 │   ├── casos_etapa2.txt
 │   ├── test_etapa1.py
 │   └── test_etapa2.py
-└── relatorio.pdf            # relatório de até 8 páginas
+├── relatorio.tex            # fonte do relatório em LaTeX
+└── relatorio.pdf            # relatório compilado, até 8 páginas
 ```
 
 ## Como executar
