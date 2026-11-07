@@ -1,4 +1,4 @@
-Processador: Intel64 Family 6 Model 183 Stepping 1, GenuineIntel
-Memória RAM: preencher manualmente
-Sistema operacional: Windows-11-10.0.26300-SP0
-Python: CPython 3.15.0
+Processador: [Intel Core i5-14600KF (14ª geração), 3.50 GHz]
+Memória RAM: [16,0 GB DDR4, 2666 MHz]
+Sistema operacional: [Windows 11 Pro, versão 26H2]
+Python: [CPython 3.15.0]

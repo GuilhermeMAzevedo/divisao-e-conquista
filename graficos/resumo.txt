@@ -1,0 +1,3 @@
+Etapa 1: a D&C é mais rápida que a força bruta a partir de n = 100.
+Etapa 2: a D&C é mais rápida que a força bruta a partir de n = 25.
+Etapa 2: o limiar mais rápido foi 8.
