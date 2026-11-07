@@ -2,7 +2,7 @@ import argparse
 import math
 import sys
 
-LIMIAR = 3
+LIMIAR = 8
 
 def distancia(p, q):
     return math.sqrt((p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2)
