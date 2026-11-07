@@ -210,6 +210,56 @@ def ponto_de_virada(linhas):
     return resultado
 
 
+NOMES_LATEX = {
+    "forca_bruta": "Força bruta",
+    "divisao_e_conquista": "Divisão e conquista",
+    "kadane": "Kadane",
+}
+
+
+def _ms(segundos):
+    return "{:.3f}".format(segundos * 1000).replace(".", ",")
+
+
+def tabelas_latex(linhas, linhas_limiar):
+    PASTA_GRAFICOS.mkdir(exist_ok=True)
+    grupos = agrupar(linhas, "etapa", "algoritmo", "n")
+    for etapa in sorted({l["etapa"] for l in linhas}):
+        presentes = {l["algoritmo"] for l in linhas if l["etapa"] == etapa}
+        nomes = [n for n in NOMES_LATEX if n in presentes]
+        tamanhos = sorted({l["n"] for l in linhas if l["etapa"] == etapa})
+        partes = [
+            "\\begin{tabular}{r" + "r" * len(nomes) + "}",
+            "\\toprule",
+            "$n$ & " + " & ".join(NOMES_LATEX[n] for n in nomes) + " \\\\",
+            "\\midrule",
+        ]
+        for n in tamanhos:
+            celulas = []
+            for nome in nomes:
+                tempos = grupos[(etapa, nome, n)]
+                desvio = statistics.stdev(tempos) if len(tempos) > 1 else 0.0
+                celulas.append("{} $\\pm$ {}".format(_ms(statistics.mean(tempos)), _ms(desvio)))
+            partes.append("{} & ".format(n) + " & ".join(celulas) + " \\\\")
+        partes += ["\\bottomrule", "\\end{tabular}", ""]
+        (PASTA_GRAFICOS / "tabela_etapa{}.tex".format(etapa)).write_text("\n".join(partes), encoding="utf-8")
+
+    if linhas_limiar:
+        grupos_l = agrupar(linhas_limiar, "limiar")
+        limiares = sorted(k[0] for k in grupos_l)
+        melhor = min(limiares, key=lambda l: statistics.mean(grupos_l[(l,)]))
+        partes = ["\\begin{tabular}{rr}", "\\toprule", "Limiar & Tempo médio (ms) \\\\", "\\midrule"]
+        for limiar in limiares:
+            tempos = grupos_l[(limiar,)]
+            desvio = statistics.stdev(tempos) if len(tempos) > 1 else 0.0
+            texto = "{} $\\pm$ {}".format(_ms(statistics.mean(tempos)), _ms(desvio))
+            if limiar == melhor:
+                texto = "\\textbf{" + texto + "}"
+            partes.append("{} & {} \\\\".format(limiar, texto))
+        partes += ["\\bottomrule", "\\end{tabular}", ""]
+        (PASTA_GRAFICOS / "tabela_limiar.tex").write_text("\n".join(partes), encoding="utf-8")
+
+
 def gerar_graficos(linhas, linhas_limiar, complexidades):
     try:
         import matplotlib
@@ -289,18 +339,23 @@ def complexidades_esperadas():
     return {(a[0], a[1]): a[4] for a in carregar_algoritmos()}
 
 
-def resumir(linhas, linhas_limiar):
-    print()
-    print(tabela_markdown(linhas))
+def resumir(linhas, linhas_limiar, salvar=False):
+    frases = []
     for etapa, n in ponto_de_virada(linhas).items():
         if n is None:
-            print("Etapa {}: a D&C não ficou mais rápida em todos os tamanhos a partir de algum n.".format(etapa))
+            frases.append("Etapa {}: a D&C não ficou mais rápida em todos os tamanhos a partir de algum n.".format(etapa))
         else:
-            print("Etapa {}: a D&C é mais rápida que a força bruta a partir de n = {}.".format(etapa, n))
+            frases.append("Etapa {}: a D&C é mais rápida que a força bruta a partir de n = {}.".format(etapa, n))
     if linhas_limiar:
         grupos_l = agrupar(linhas_limiar, "limiar")
         melhor = min(grupos_l, key=lambda k: statistics.mean(grupos_l[k]))[0]
-        print("Etapa 2: o limiar mais rápido foi {}.".format(melhor))
+        frases.append("Etapa 2: o limiar mais rápido foi {}.".format(melhor))
+    print()
+    print(tabela_markdown(linhas))
+    print("\n".join(frases))
+    if salvar:
+        PASTA_GRAFICOS.mkdir(exist_ok=True)
+        (PASTA_GRAFICOS / "resumo.txt").write_text("\n".join(frases) + "\n", encoding="utf-8")
 
 
 def main():
@@ -315,7 +370,8 @@ def main():
         if not linhas:
             parser.error("{} não encontrado; rode as medições primeiro".format(ARQ_CSV.name))
         gerar_graficos(linhas, linhas_limiar, complexidades_esperadas())
-        resumir(linhas, linhas_limiar)
+        tabelas_latex(linhas, linhas_limiar)
+        resumir(linhas, linhas_limiar, salvar=True)
         return
 
     maquina = configuracao_maquina()
@@ -344,7 +400,8 @@ def main():
     (PASTA_GRAFICOS / "tabela.md").write_text(tabela_markdown(linhas), encoding="utf-8")
 
     gerar_graficos(linhas, linhas_limiar, {(a[0], a[1]): a[4] for a in algoritmos})
-    resumir(linhas, linhas_limiar)
+    tabelas_latex(linhas, linhas_limiar)
+    resumir(linhas, linhas_limiar, salvar=True)
 
 
 if __name__ == "__main__":
